@@ -15,26 +15,11 @@
   --color-magenta-14: #791a79;
   --color-ring: var(--color-magenta-12);
   --color-disabled: #b5b5b5;
-  --color-icon: #4a4a4a; /* Heading */
+  --color-icon: #4a4a4a;
   --color-icon-disabled: #cccccc;
   --color-icon-secondary: #8a8a8a;
-  --text-heading-xs: 0.75rem;
-  --text-heading-s: 1rem;
-  --text-heading-m: 1.5rem;
-  --text-heading-l: 2rem;
-  --text-heading-xl: 2.5rem;
 
-  /* Body */
 
-  --text-body-s: 0.875rem;
-
-  --text-body-m: 1rem;
-
-  --text-body-l: 1.125rem;
-
-  /* Caption / label */
-
-  --text-label: 0.75rem;
 }
 
 @theme inline {
@@ -82,7 +67,7 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklab(30.919% 0 -0.00004);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -151,17 +136,61 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
   --shadow-sticky-bar: 0px 7px 10px 0px #0000000d;
-  --secondary-foreground: 215% 20.2% 65.1%; /* A readable light gray */
+  --secondary-foreground: 215% 20.2% 65.1%;
+  /* A readable light gray */
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
+}
+
+
+/* Done */
+@utility typography-body-lg {
+  @apply font-sans font-medium text-base leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-body-md {
+  @apply font-sans font-normal text-sm leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-header-xl {
+  @apply font-sans font-medium text-xl leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-header-lg {
+  @apply font-sans font-semibold text-lg leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-header-sm {
+  @apply font-sans font-medium text-base leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-header-xs {
+  @apply font-sans font-normal text-sm leading-[140%] tracking-normal;
+}
+
+/* Done */
+@utility typography-tag-sm {
+  @apply font-sans font-normal text-xs leading-[150%] tracking-normal;
+}
+
+/* Done */
+@utility typography-primary-md {
+  @apply font-sans font-semibold text-4xl leading-none tracking-normal;
 }

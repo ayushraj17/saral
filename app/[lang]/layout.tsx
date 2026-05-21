@@ -14,26 +14,26 @@ import {
 
 import Image from "next/image"
 
-import {LocaleLink} from "@/components/shared/LocaleLink"
-import {cn} from "@/lib/utils"
+import { LocaleLink } from "@/components/shared/LocaleLink"
+import { cn } from "@/lib/utils"
 
-import ApplicationsIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Applications.svg"
-import BrainIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Brain.svg"
-import BriefcaseIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Briefcase.svg"
-import HomeIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Home.svg"
-import ProfileIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Profile.svg"
-import PaymentsIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Wallet.svg"
-import {usePathname} from "next/navigation"
+import ApplicationsIcon from "@/public/assets/icons/Applications.svg"
+import BrainIcon from "@/public/assets/icons/Brain.svg"
+import BriefcaseIcon from "@/public/assets/icons/Briefcase.svg"
+import HomeIcon from "@/public/assets/icons/Home.svg"
+import ProfileIcon from "@/public/assets/icons/Profile.svg"
+import PaymentsIcon from "@/public/assets/icons/Wallet.svg"
+import { useParams, usePathname, useRouter } from "next/navigation"
 
 const sidebarItems = {
   home: {
     label: "Home",
-    href: "/work-in-progress",
+    href: "/",
     icon: HomeIcon,
   },
   insights: {
     label: "Insights",
-    href: "/work-in-progress",
+    href: "/insights-dashboard",
     icon: BrainIcon,
   },
   gamification: {
@@ -43,12 +43,12 @@ const sidebarItems = {
   },
   applications: {
     label: "Applications",
-    href: "/work-in-progress",
+    href: "/applications-dashboard",
     icon: ApplicationsIcon,
   },
   payments: {
     label: "Payments",
-    href: "/work-in-progress",
+    href: "/payments-dashboard",
     icon: PaymentsIcon,
   },
 }
@@ -57,8 +57,25 @@ type Props = {
   children: React.ReactNode
 }
 
-export default function GamificationPageDashboard({children}: Props) {
+export default function GamificationPageDashboard({ children }: Props) {
   const pathname = usePathname()
+  const params = useParams()
+  const router = useRouter()
+  const lang = (params?.lang as string) || "en"
+
+  const handleLanguageSwitch = () => {
+    let nextPathname = pathname
+    if (lang === "en") {
+      nextPathname = pathname.replace(/^\/en/, "/hindi")
+    } else if (lang === "hindi") {
+      nextPathname = pathname.replace(/^\/hindi/, "/en")
+    }
+    router.push(nextPathname)
+  }
+
+  const normalizedPathname = pathname.endsWith("/") && pathname !== "/"
+    ? pathname.slice(0, -1)
+    : pathname
 
   return (
     <SidebarProvider>
@@ -69,7 +86,14 @@ export default function GamificationPageDashboard({children}: Props) {
               <SidebarGroupContent>
                 <SidebarMenu className="mt-6 gap-1">
                   {Object.values(sidebarItems).map((item) => {
-                    const isActive = pathname.includes(item.href)
+                    const localizedHref = item.href === "/" ? `/${lang}` : `/${lang}${item.href}`
+                    const normalizedHref = localizedHref.endsWith("/") && localizedHref !== "/"
+                      ? localizedHref.slice(0, -1)
+                      : localizedHref
+
+                    const isActive = item.href === "/"
+                      ? normalizedPathname === normalizedHref
+                      : (normalizedPathname === normalizedHref || normalizedPathname.startsWith(normalizedHref + "/"))
 
                     return (
                       <SidebarMenuItem key={item.label}>
@@ -102,6 +126,20 @@ export default function GamificationPageDashboard({children}: Props) {
 
           <SidebarFooter>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={handleLanguageSwitch}
+                  className="text-secondary hover:text-primary flex items-center transition-colors duration-200"
+                >
+                  <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/10 text-[9px] font-bold text-primary border border-primary/20 shrink-0">
+                    {lang === "en" ? "EN" : "HI"}
+                  </span>
+                  <span className="text-sm leading-[130%] font-medium tracking-normal">
+                    {lang === "en" ? "Switch to Hindi" : "English में बदलें"}
+                  </span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
               <SidebarMenuItem>
                 <SidebarMenuButton className="text-secondary">
                   <Image

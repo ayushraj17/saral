@@ -11,21 +11,18 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
-export async function generateStaticParams() {
-  return [{lang: "en-US"}, {lang: "de"}]
-}
-
 export default async function RootLayout({
   children,
-  params,
-}: LayoutProps<"/[lang]">) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html
-      lang={(await params).lang as string}
+      lang="en"
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

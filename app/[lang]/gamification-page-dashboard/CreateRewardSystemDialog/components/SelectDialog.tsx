@@ -1,26 +1,27 @@
-import {Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
+import { CommandItem } from "@/components/ui/command"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
-import {Label} from "@/components/ui/label"
+import { Label } from "@/components/ui/label"
 import SelectComponent from "@/components/ui/user/SelectComponent"
-import Typography from "@/components/ui/user/Typography"
-import {Pencil, X} from "lucide-react"
-import {useState} from "react"
+import { Pencil } from "lucide-react"
+import { useState } from "react"
 
 type SelectDialogProps = {
   triggerLabel: string
   fieldLabel: string
   dialogTitle: string
   placeholder: string
-  options: {label: string; value: string}[]
+  options: { label: string; value: string }[]
   selectedTier?: string
   onSave: (value: string) => void
+  isSelected?: boolean
+  disabled?: boolean
+  value?: string
 }
 
 const SelectDialog = ({
@@ -29,53 +30,85 @@ const SelectDialog = ({
   dialogTitle,
   placeholder,
   options,
+  isSelected,
   selectedTier,
+  disabled,
   onSave,
+  value,
 }: SelectDialogProps) => {
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState(selectedTier || "")
+
+  // Sync draft when selectedTier changes externally
+  const handleOpen = (val: boolean) => {
+    if (disabled) return
+    if (val) setDraft(selectedTier || "")
+    setOpen(val)
+  }
 
   const handleClose = () => {
     setOpen(false)
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <div className="flex flex-1 items-center justify-between gap-2">
-        {selectedTier && (
-          <button onClick={() => onSave(draft)}>
-            <Typography variant="bodyLg">{triggerLabel}</Typography>
-          </button>
-        )}
-        {selectedTier ? (
-          <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={handleOpen}>
+      {selectedTier ? (
+        <CommandItem
+          value={value}
+          className="px-4"
+          checked={isSelected}
+          disabled={disabled}
+          onSelect={() => {
+            if (!disabled) {
+              onSave(draft)
+            }
+          }}
+        >
+          <span className="typography-body-lg flex-1 text-left">
+            {triggerLabel}
+          </span>
+          {isSelected && (
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="shrink-0"
-              onClick={(e) => e.stopPropagation()}
+              className="size-8 shrink-0 text-inherit hover:bg-transparent!"
+              disabled={disabled}
+              onClick={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                setOpen(true)
+              }}
             >
               <Pencil className="size-5 stroke-icon-secondary" />
             </Button>
-          </DialogTrigger>
-        ) : (
-          <DialogTrigger asChild>
-            <Typography variant="bodyLg">{triggerLabel}</Typography>
-          </DialogTrigger>
-        )}
-      </div>
+          )}
+        </CommandItem>
+      ) : (
+        <CommandItem
+          value={value}
+          checked={isSelected}
+          disabled={disabled}
+          className="px-4"
+          onSelect={() => {
+            if (!disabled) {
+              setOpen(true)
+            }
+          }}
+        >
+          <span className="typography-body-lg flex-1">
+            {triggerLabel}
+          </span>
+        </CommandItem>
+      )}
 
       <DialogContent
+        size="sm"
         className="overflow-visible md:max-w-100"
-        showCloseButton={false}
+        aria-describedby={undefined}
       >
-        <DialogTitle className="flex items-center justify-between">
-          <Typography variant="headingXl">{dialogTitle}</Typography>
-
-          <DialogClose onClick={handleClose}>
-            <X className="text-secondary" />
-          </DialogClose>
+        <DialogTitle asChild>
+          <h2 className="typography-header-xl">{dialogTitle}</h2>
         </DialogTitle>
 
         <div>

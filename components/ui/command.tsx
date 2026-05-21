@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {Command as CommandPrimitive} from "cmdk"
+import { Command as CommandPrimitive } from "cmdk"
 
-import {cn} from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {InputGroup, InputGroupAddon} from "@/components/ui/input-group"
-import {SearchIcon, CheckIcon} from "lucide-react"
+import { InputGroup, InputGroupAddon } from "@/components/ui/input-group"
+import { SearchIcon, CheckIcon } from "lucide-react"
 
 /** Sentinel so cmdk does not auto-highlight the first item when value is empty. */
 const CMDK_NO_SELECTION = "__cmdk_none__"
@@ -53,13 +53,11 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
-  showCloseButton = false,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title?: string
   description?: string
   className?: string
-  showCloseButton?: boolean
 }) {
   return (
     <Dialog {...props}>
@@ -72,7 +70,6 @@ function CommandDialog({
           "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
           className
         )}
-        showCloseButton={showCloseButton}
       >
         {children}
       </DialogContent>
@@ -166,7 +163,7 @@ function CommandItem({
   children,
   checked,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Item> & {checked?: boolean}) {
+}: React.ComponentProps<typeof CommandPrimitive.Item> & { checked?: boolean }) {
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
@@ -185,7 +182,7 @@ function CommandItem({
   )
 }
 
-function CommandShortcut({className, ...props}: React.ComponentProps<"span">) {
+function CommandShortcut({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="command-shortcut"

@@ -5,7 +5,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import ErrorMessage from "@/components/ui/user/ErrorMessage"
 
 type SelectOption = {
   label: string
@@ -21,7 +20,6 @@ type SelectComponentProps = {
   contentClassName?: string
   contentPosition?: "popper" | "item-aligned"
   hasError?: boolean
-  errorMessage?: string
 }
 
 const SelectComponent = ({
@@ -33,24 +31,20 @@ const SelectComponent = ({
   contentClassName,
   contentPosition = "item-aligned",
   hasError,
-  errorMessage,
 }: SelectComponentProps) => {
   return (
-    <div className="flex flex-col gap-1">
-      <Select value={value} onValueChange={onChange} disabled={disabled}>
-        <SelectTrigger className="w-full" aria-invalid={hasError}>
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent position={contentPosition} className={contentClassName}>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <ErrorMessage error={hasError} errorMessage={errorMessage} />
-    </div>
+    <Select value={value} onValueChange={onChange} disabled={disabled}>
+      <SelectTrigger className="w-full" aria-invalid={hasError}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent position={contentPosition} className={contentClassName}>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 

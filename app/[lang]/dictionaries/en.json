@@ -2,8 +2,8 @@
   "gamification": {
     "dashboard": {
       "title": "Gamify your Campaign",
-      "description": "Enable gamification to start crafting \n your custom reward system.",
-      "cta": "Get Started",
+      "description": "Enable gamification to start crafting your custom reward system.",
+      "cta": "Enable Gamification",
       "cards": [
         {
           "icon": "Gift",
@@ -12,9 +12,11 @@
         },
         {
           "icon": "Crown",
+          "title": "Set up Milestones",
           "description": "Set up custom goals for sales, posts, or time-based achievements"
         },
         {
+          "icon": "Coupon",
           "title": "Coupon",
           "description": "Create custom incentives like flat fees, free products, or special commissions."
         }

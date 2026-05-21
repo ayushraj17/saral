@@ -1,12 +1,12 @@
 import React from "react"
 
-import HomeIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Home.svg"
-import BrainIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Brain.svg"
-import BriefcaseIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Briefcase.svg"
-import ApplicationsIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Applications.svg"
-import PaymentsIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Wallet.svg"
-import SidebarBrandIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Icon.svg"
-import ProfileIcon from "@/app/[lang]/gamification-page-dashboard/assets/gamification-dashboard/icons/Profile.svg"
+import HomeIcon from "@/public/assets/icons/Home.svg"
+import BrainIcon from "@/public/assets/icons/Brain.svg"
+import BriefcaseIcon from "@/public/assets/icons/Briefcase.svg"
+import ApplicationsIcon from "@/public/assets/icons/Applications.svg"
+import PaymentsIcon from "@/public/assets/icons/Wallet.svg"
+import SidebarBrandIcon from "@/public/assets/icons/Icon.svg"
+import ProfileIcon from "@/public/assets/icons/Profile.svg"
 
 // Map your custom icons into a clean dictionary lookup table
 export const ICON_MAP = {

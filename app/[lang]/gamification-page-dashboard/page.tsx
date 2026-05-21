@@ -1,32 +1,31 @@
-import {Card, CardContent, CardHeader} from "@/components/ui/card"
-import Typography from "@/components/ui/user/Typography"
-import {cn} from "@/lib/utils"
-import {Bell} from "lucide-react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { Bell } from "lucide-react"
 import Image from "next/image"
 import React from "react"
-import cardImage from "./assets/gamification-dashboard/card.svg"
-import gamificationDashboard from "./assets/gamification-dashboard/gamification-dashboard.svg"
-import CreateYourRewardSystemDialog from "./components/CreateYourRewardSystemDialog"
-import Gift from "./assets/gamification-dashboard/icons/Gift.svg"
-import Crown from "./assets/gamification-dashboard/icons/Crown.svg"
-import Coupon from "./assets/gamification-dashboard/icons/Coupon.svg"
+import cardImage from "@/public/assets/gamification-dashboard/card.svg"
+import gamificationDashboard from "@/public/assets/gamification-dashboard/gamification-dashboard.svg"
+import Coupon from "@/public/assets/icons/Coupon.svg"
+import Crown from "@/public/assets/icons/Crown.svg"
+import Gift from "@/public/assets/icons/Gift.svg"
 
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import {getDictionary} from "../dicitionaries"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getDictionary } from "../dicitionaries"
+import CreateRewardSystemDialog from "./CreateRewardSystemDialog"
 
 const GamificationPageDashboard = async ({
   params,
 }: {
-  params: Promise<{lang: string}>
+  params: Promise<{ lang: string }>
 }) => {
-  const {lang} = await params
+  const { lang } = await params
 
-  const {gamification: dict} = await getDictionary(lang as "en" | "hindi")
+  const { gamification: dict } = await getDictionary(lang as "en" | "hindi")
 
   return (
     <React.Fragment>
       <header className="flex h-16 items-center justify-between px-6 py-4">
-        <Typography variant="headingLg">{dict.dashboard.title}</Typography>
+        <h1 className="typography-header-lg">{dict.dashboard.title}</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -56,21 +55,22 @@ const GamificationPageDashboard = async ({
             height={322}
             className="absolute inset-0 z-0"
           />
-          <div className="z-10 mt-15 space-y-4 text-center">
-            <Typography variant="primaryMd" className="text-magenta-9">
+          <div className="z-10 mt-15 text-center flex flex-col items-center justify-center space-y-4">
+            <h2 className="font-semibold text-[28px] tracking-normal leading-9 text-magenta-9">
               {dict.dashboard.title}
-            </Typography>
+            </h2>
 
-            <Typography variant="bodyMd" className="text-muted-foreground">
+            <p className="typography-body-md text-muted-foreground max-w-[250px]">
               {dict.dashboard.description}
-            </Typography>
-            <CreateYourRewardSystemDialog triggerLabel={dict.dashboard.cta} />
+            </p>
+            {/* <CreateYourRewardSystemDialog triggerLabel={dict.dashboard.cta} /> */}
+            <CreateRewardSystemDialog triggerLabel={dict.dashboard.cta} />
           </div>
         </div>
 
         <div className="z-10 mx-4.5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Object.values(dict.dashboard.cards).map((card) => (
-            <div key={card.title} className="relative flex justify-center">
+          {Object.values(dict.dashboard.cards).map((card, index) => (
+            <div key={card.title || index} className="relative flex justify-center">
               <Image
                 src={cardImage}
                 alt="Gamification Dashboard"
@@ -95,21 +95,19 @@ const GamificationPageDashboard = async ({
                     className="z-10"
                     width={26}
                     height={26}
+                    style={{ width: "auto", height: "auto" }}
                     alt={card.icon || "icon"}
                   />
                 </span>
                 <CardHeader className="mt-3">
-                  <Typography variant="headingSm" className="text-center">
+                  <h1 className="typography-header-sm text-center">
                     {card.title}
-                  </Typography>
+                  </h1>
                 </CardHeader>
                 <CardContent>
-                  <Typography
-                    variant="bodyMd"
-                    className="text-center text-muted-foreground"
-                  >
+                  <p className="typography-body-md text-center text-muted-foreground">
                     {card.description}
-                  </Typography>
+                  </p>
                 </CardContent>
               </Card>
             </div>
