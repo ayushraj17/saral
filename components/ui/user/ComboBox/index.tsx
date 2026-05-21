@@ -18,54 +18,13 @@ import SelectComponent from "@/components/ui/user/SelectComponent"
 import Typography from "@/components/ui/user/Typography"
 import {cn} from "@/lib/utils"
 import {Check, ChevronDown} from "lucide-react"
-import {DynamicIcon, IconName} from "lucide-react/dynamic"
+import {DynamicIcon} from "lucide-react/dynamic"
 import React from "react"
 import {Control, Controller, FieldValues, Path, useWatch} from "react-hook-form"
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-export type VariableDefinition =
-  | {
-      key: string
-      placeholder: string
-      type?: "input"
-      startIcon?: IconName
-      inputType?: "text" | "number"
-    }
-  | {
-      key: string
-      placeholder: string
-      type: "select"
-      options: {value: string; label: string}[]
-      selectedLabel?: string
-      fieldLabel?: string
-    }
-
-export type EventOption = {
-  label: string
-  value: string
-  variables: VariableDefinition[]
-  disabled?: boolean
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-const varPath = <T extends FieldValues>(
-  name: Path<T>,
-  optionValue: string,
-  varKey: string
-) => `${String(name)}Variables.${optionValue}.${varKey}` as Path<T>
-
-function resolveVariableDisplay(
-  variable: VariableDefinition,
-  value: string | undefined
-): string | undefined {
-  if (!value) return undefined
-  if (variable.type === "select") {
-    return variable.options.find((o) => o.value === value)?.label ?? value
-  }
-  return value
-}
+import {EventOption, VariableDefinition} from "./types"
+import {resolveVariableDisplay, varPath} from "./util"
+import ComboBoxFooter from "./components/ComboBoxFooter"
+import {UPGRADE_COMMISSION_TIER} from "@/app/[lang]/gamification-page-dashboard/config"
 
 // ─── OptionLabel ──────────────────────────────────────────────────────────────
 
@@ -234,7 +193,6 @@ function OptionRow<T extends FieldValues>({
         value={option.label}
         onSelect={handleRowSelect}
         checked={isSelected}
-        className={cn("gap-0 px-3")}
       >
         <>
           <Typography variant="bodyLg" className="w-full" as="div">
@@ -255,27 +213,6 @@ function OptionRow<T extends FieldValues>({
           variableErrors={variableErrors}
         />
       )}
-    </div>
-  )
-}
-
-// ─── ComboBoxFooter ───────────────────────────────────────────────────────────
-
-function ComboBoxFooter({
-  onCancel,
-  onSave,
-}: {
-  onCancel: () => void
-  onSave: () => void
-}) {
-  return (
-    <div className="grid grid-cols-2 gap-2 p-3 pt-2">
-      <Button type="button" variant="outline" onClick={onCancel}>
-        Cancel
-      </Button>
-      <Button type="button" onClick={onSave}>
-        Save
-      </Button>
     </div>
   )
 }
@@ -334,22 +271,38 @@ function ComboBoxTrigger<T extends FieldValues>({
 
 // ─── ComboBox ─────────────────────────────────────────────────────────────────
 
+import {Command as CommandPrimitive} from "cmdk"
+
+type ExternalOption = {
+  option: EventOption
+  commandItemProps?: React.ComponentProps<typeof CommandPrimitive.Item> & {
+    checked: boolean
+  }
+  render: (isSelected: boolean) => React.ReactNode
+}
+
 export const ComboBox = <T extends FieldValues>({
   placeholder,
   options,
   control,
   name,
+  // Allows consumers to inject additional CommandItems
+  externalOptions,
 }: {
   placeholder: string
   options: EventOption[]
   control: Control<T>
   name: Path<T>
+  externalOptions?: ExternalOption[]
 }) => {
   const [open, setOpen] = React.useState(false)
   const [attempted, setAttempted] = React.useState(false)
 
   const selectedValue = useWatch({control, name})
-  const selectedOption = options.find((o) => o.value === selectedValue)
+  const selectedOption = [
+    ...options,
+    ...(externalOptions?.map((e) => e.option) || []),
+  ].find((o) => o.value === selectedValue)
 
   const variableValues = useWatch({
     control,
@@ -380,6 +333,7 @@ export const ComboBox = <T extends FieldValues>({
   const hideFooter = selectedOption?.variables.length === 0
 
   const handleSave = () => {
+    console.log("handleSave")
     setAttempted(true)
     if (emptyFields.size === 0) {
       setAttempted(false)
@@ -463,7 +417,18 @@ export const ComboBox = <T extends FieldValues>({
                       onDeselect={handleDeselect}
                     />
                   ))}
-                  <OptionRow></OptionRow>
+                  {externalOptions?.map((ext) => (
+                    <CommandItem
+                      key={ext.option.value}
+                      value={ext.option.value}
+                      onSelect={
+                        ext.commandItemProps?.onClick ? undefined : handleSave
+                      }
+                      {...ext.commandItemProps}
+                    >
+                      {ext.render(field.value === ext.option.value)}
+                    </CommandItem>
+                  ))}
                 </CommandGroup>
               </CommandList>
               {!hideFooter && (

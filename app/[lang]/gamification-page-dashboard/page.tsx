@@ -11,34 +11,22 @@ import Gift from "./assets/gamification-dashboard/icons/Gift.svg"
 import Crown from "./assets/gamification-dashboard/icons/Crown.svg"
 import Coupon from "./assets/gamification-dashboard/icons/Coupon.svg"
 
-const cards = [
-  {
-    title: "Boost UGC Participation",
-    description:
-      "Increase campaign participation by making it rewarding and interactive.",
-    icon: "Gift",
-  },
-  {
-    title: "Add Milestones",
-    description:
-      "Set up custom goals for users, points, or other achievement mechanics.",
-    icon: "Crown",
-  },
-  {
-    title: "Customizable Rewards",
-    description:
-      "Create reward structures like free products or special experiences.",
-    icon: "Coupon",
-  },
-]
-
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
+import {getDictionary} from "../dicitionaries"
 
-const GamificationPageDashboard = ({}) => {
+const GamificationPageDashboard = async ({
+  params,
+}: {
+  params: Promise<{lang: string}>
+}) => {
+  const {lang} = await params
+
+  const {gamification: dict} = await getDictionary(lang as "en" | "hindi")
+
   return (
     <React.Fragment>
       <header className="flex h-16 items-center justify-between px-6 py-4">
-        <Typography variant="headingLg">Gamification</Typography>
+        <Typography variant="headingLg">{dict.dashboard.title}</Typography>
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -70,20 +58,18 @@ const GamificationPageDashboard = ({}) => {
           />
           <div className="z-10 mt-15 space-y-4 text-center">
             <Typography variant="primaryMd" className="text-magenta-9">
-              Gamify your Campaign
+              {dict.dashboard.title}
             </Typography>
 
             <Typography variant="bodyMd" className="text-muted-foreground">
-              Engage participants by introducing points, rewards, and
-              milestones.
+              {dict.dashboard.description}
             </Typography>
-
-            <CreateYourRewardSystemDialog />
+            <CreateYourRewardSystemDialog triggerLabel={dict.dashboard.cta} />
           </div>
         </div>
 
         <div className="z-10 mx-4.5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card) => (
+          {Object.values(dict.dashboard.cards).map((card) => (
             <div key={card.title} className="relative flex justify-center">
               <Image
                 src={cardImage}
@@ -109,7 +95,7 @@ const GamificationPageDashboard = ({}) => {
                     className="z-10"
                     width={26}
                     height={26}
-                    alt={card.icon}
+                    alt={card.icon || "icon"}
                   />
                 </span>
                 <CardHeader className="mt-3">

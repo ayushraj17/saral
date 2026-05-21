@@ -56,6 +56,7 @@ const sidebarItems = {
 type Props = {
   children: React.ReactNode
 }
+
 export default function GamificationPageDashboard({children}: Props) {
   const pathname = usePathname()
 

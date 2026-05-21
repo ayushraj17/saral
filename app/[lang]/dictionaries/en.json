@@ -1,38 +1,24 @@
 {
-  "sideBar": {
-    "navigation": {
-      "home": "Home",
-      "insights": "Insights",
-      "gamification": "Gamification",
-      "applications": "Applications",
-      "payments": "Payments",
-      "settings": "Settings"
-    }
-  },
   "gamification": {
-  
     "dashboard": {
       "title": "Gamify your Campaign",
       "description": "Enable gamification to start crafting \n your custom reward system.",
       "cta": "Get Started",
       "cards": [
         {
+          "icon": "Gift",
           "title": "Reward your Ambassadors",
           "description": "Boost campaign performance by setting up rewards for ambassadors"
         },
         {
-          "title": "Set Milestones",
+          "icon": "Crown",
           "description": "Set up custom goals for sales, posts, or time-based achievements"
         },
         {
-          "title": "Incentives",
+          "title": "Coupon",
           "description": "Create custom incentives like flat fees, free products, or special commissions."
         }
       ]
-    },
-    "createRewardSystem": {
-      "title": "Create Your Reward System",
-      "description": "Set up rewards for your students"
     }
   }
 }
