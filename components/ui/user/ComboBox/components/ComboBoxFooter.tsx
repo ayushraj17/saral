@@ -12,7 +12,7 @@ function ComboBoxFooter({
       <Button type="button" variant="outline" onClick={onCancel}>
         Cancel
       </Button>
-      <Button type="button" onClick={onSave}>
+      <Button type="submit" onClick={onSave}>
         Save
       </Button>
     </div>

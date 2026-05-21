@@ -32,7 +32,7 @@ const CreateYourRewardSystemDialog = ({
 }: {
   triggerLabel: string
 }) => {
-  const {control, handleSubmit, watch, setValue} = useForm<FormValues>({
+  const {control, handleSubmit, watch, setValue, reset} = useForm<FormValues>({
     defaultValues: {
       isTimeBound: false,
     },
@@ -82,10 +82,12 @@ const CreateYourRewardSystemDialog = ({
           }
         : undefined,
     }
-    console.log("Form submitted", cleanedPayload)
+    alert("Form submitted: " + JSON.stringify(cleanedPayload, null, 2))
+    setTimeout(() => {
+      reset({})
+    }, 500)
   }
 
-  console.log("selectedTier", formValues)
   return (
     <Dialog>
       <DialogTrigger asChild>

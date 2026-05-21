@@ -103,7 +103,6 @@ function VariableInput<T extends FieldValues>({
       render={({field: varField}) => (
         <Input
           aria-invalid={hasError}
-          type={variable.inputType ?? "text"}
           startAdornment={
             variable.startIcon && (
               <DynamicIcon
@@ -120,6 +119,7 @@ function VariableInput<T extends FieldValues>({
           hasError={hasError}
           errorMessage="Required"
           onChange={(e) => varField.onChange(e.target.value)}
+          {...variable.inputProps}
         />
       )}
     />

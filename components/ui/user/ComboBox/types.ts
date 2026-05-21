@@ -1,4 +1,5 @@
 import {IconName} from "lucide-react/dynamic"
+import {InputProps} from "../../input"
 
 export type VariableDefinition =
   | {
@@ -6,7 +7,7 @@ export type VariableDefinition =
       placeholder: string
       type?: "input"
       startIcon?: IconName
-      inputType?: "text" | "number"
+      inputProps?: InputProps
     }
   | {
       key: string

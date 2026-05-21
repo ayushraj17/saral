@@ -3,7 +3,7 @@ import * as React from "react"
 import {cn} from "@/lib/utils"
 import ErrorMessage from "./user/ErrorMessage"
 
-type InputProps = React.ComponentProps<"input"> & {
+export type InputProps = React.ComponentProps<"input"> & {
   startAdornment?: React.ReactNode
   hasError?: boolean
   errorMessage?: string
