@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Label } from "@/components/ui/label"
@@ -32,6 +33,8 @@ const DateInput = <T extends FieldValues>({
     side = "top",
     sideOffset = 8,
 }: DateInputProps<T>) => {
+    const [open, setOpen] = useState(false)
+
     return (
         <div className="space-y-3">
             {label && <Label required={required}>{label}</Label>}
@@ -40,7 +43,7 @@ const DateInput = <T extends FieldValues>({
                 name={name}
                 render={({ field, fieldState: { error } }) => (
                     <>
-                        <Popover modal>
+                        <Popover open={open} onOpenChange={setOpen} modal>
                             <PopoverTrigger asChild>
                                 <Button
                                     type="button"
@@ -63,7 +66,10 @@ const DateInput = <T extends FieldValues>({
                                 <Calendar
                                     mode="single"
                                     selected={field.value ? new Date(field.value) : undefined}
-                                    onSelect={(date) => field.onChange(date?.toISOString())}
+                                    onSelect={(date) => {
+                                        field.onChange(date?.toISOString())
+                                        setOpen(false)
+                                    }}
                                     disabled={disabled}
                                 />
                             </PopoverContent>
